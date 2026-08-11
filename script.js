@@ -211,9 +211,7 @@ function combineImages() {
     return;
   }
 
-  const targetWidth = Math.min(
-    ...loadedImages.map(img => img.width)
-  );
+  const targetWidth = 400;
 
   const sizes = loadedImages.map(img => ({
     width: targetWidth,
