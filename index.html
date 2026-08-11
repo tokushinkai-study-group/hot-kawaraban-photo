@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>歯科画像結合ツール</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>歯科画像結合ツール</h1>
+      <p class="subtitle">5枚の口腔内写真を十字型レイアウトで1枚のPNGに結合します</p>
+    </header>
+
+    <section class="upload-section">
+      <h2>画像登録</h2>
+      <p class="upload-hint">各枠に画像をドラッグ＆ドロップ、またはクリックして選択してください</p>
+
+      <div class="upload-grid">
+        <div class="upload-slot slot-empty" data-index="1">
+          <p class="slot-label">②上顎咬合面</p>
+          <div class="slot-body">
+            <span class="slot-icon">＋</span>
+            <p class="slot-text">画像を追加</p>
+          </div>
+          <input type="file" class="slot-input" accept="image/*" hidden>
+        </div>
+
+        <div class="upload-slot slot-empty" data-index="3">
+          <p class="slot-label">④左側方</p>
+          <div class="slot-body">
+            <span class="slot-icon">＋</span>
+            <p class="slot-text">画像を追加</p>
+          </div>
+          <input type="file" class="slot-input" accept="image/*" hidden>
+        </div>
+
+        <div class="upload-slot slot-empty" data-index="0">
+          <p class="slot-label">①正面</p>
+          <div class="slot-body">
+            <span class="slot-icon">＋</span>
+            <p class="slot-text">画像を追加</p>
+          </div>
+          <input type="file" class="slot-input" accept="image/*" hidden>
+        </div>
+
+        <div class="upload-slot slot-empty" data-index="4">
+          <p class="slot-label">⑤右側方</p>
+          <div class="slot-body">
+            <span class="slot-icon">＋</span>
+            <p class="slot-text">画像を追加</p>
+          </div>
+          <input type="file" class="slot-input" accept="image/*" hidden>
+        </div>
+
+        <div class="upload-slot slot-empty" data-index="2">
+          <p class="slot-label">③下顎咬合面</p>
+          <div class="slot-body">
+            <span class="slot-icon">＋</span>
+            <p class="slot-text">画像を追加</p>
+          </div>
+          <input type="file" class="slot-input" accept="image/*" hidden>
+        </div>
+      </div>
+    </section>
+
+    <p class="counter" id="counter">0 / 5 枚</p>
+
+    <section class="controls">
+      <div class="button-group">
+        <button type="button" id="combineBtn" disabled>画像を結合</button>
+        <button type="button" id="downloadBtn" disabled>PNGをダウンロード</button>
+        <button type="button" id="clearBtn" disabled>すべてクリア</button>
+      </div>
+    </section>
+
+    <section class="result-section" id="resultSection" hidden>
+      <h2>結合結果</h2>
+      <div class="result-wrapper">
+        <canvas id="resultCanvas"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
