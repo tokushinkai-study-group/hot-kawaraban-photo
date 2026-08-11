@@ -34,7 +34,7 @@ function getFilledCount() {
 }
 
 function updateCounter() {
-  counter.textContent = `${getFilledCount()} / 3 枚`;
+  counter.textContent = `${getFilledCount()} / ${images.length} 枚`;
 }
 
 function updateButtons() {
