@@ -249,12 +249,29 @@ function combineImages() {
     y += sizes[i].height;
   });
 
-  combinedDataUrl =
-    resultCanvas.toDataURL("image/png");
+  let quality = 0.9;
+let jpegDataUrl = resultCanvas.toDataURL("image/jpeg", quality);
 
-  resultSection.hidden = false;
+// DataURLから容量(KB)計算
+function getSizeKB(dataUrl) {
+  return Math.round((dataUrl.length * 3 / 4) / 1024);
+}
 
-  updateButtons();
+// 120KB以下になるまで圧縮
+while (getSizeKB(jpegDataUrl) > 120 && quality > 0.1) {
+  quality -= 0.05;
+  jpegDataUrl = resultCanvas.toDataURL(
+    "image/jpeg",
+    quality
+  );
+}
+
+combinedDataUrl = jpegDataUrl;
+
+resultSection.hidden = false;
+
+updateButtons();
+
 }
 
   function downloadPng() {
