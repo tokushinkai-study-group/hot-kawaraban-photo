@@ -2,6 +2,7 @@ const SLOT_LABELS = [
   "1枚目",
   "2枚目",
   "3枚目",
+  "4枚目",
 ];
 
 /** インデックス: 0=1枚目, 1=2枚目, 2=3枚目 */
@@ -18,7 +19,7 @@ const clearBtn = document.getElementById("clearBtn");
 const resultSection = document.getElementById("resultSection");
 const resultCanvas = document.getElementById("resultCanvas");
 /** @type {({ file: File, url: string, image: HTMLImageElement } | null)[]} */
-let images = [null, null, null];
+let images = [null, null, null, null];
 
 function getSlotElement(index) {
   return document.querySelector(`.upload-slot[data-index="${index}"]`);
