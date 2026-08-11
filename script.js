@@ -6,8 +6,8 @@ const SLOT_LABELS = [
 
 /** インデックス: 0=1枚目, 1=2枚目, 2=3枚目 */
 const INDEX = {
-  front: 0,
-  upper: 1,
+  upper: 0,
+  front: 1,
   lower: 2,
   };
 
