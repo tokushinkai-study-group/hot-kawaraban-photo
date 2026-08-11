@@ -26,6 +26,7 @@ function getSlotElement(index) {
 
 /** @type {string | null} */
 let combinedDataUrl = null;
+let draggedIndex = null;
 
 function getFilledCount() {
   return images.filter(Boolean).length;
@@ -69,6 +70,11 @@ function renderSlot(index) {
   slot.querySelector(".slot-label").textContent = label;
 
   if (item) {
+slot.draggable = true;
+
+slot.addEventListener("dragstart", () => {
+  draggedIndex = index;
+});
     slot.classList.remove("slot-empty");
     slot.classList.add("slot-filled");
 
@@ -308,14 +314,31 @@ SLOT_LABELS.forEach((_, index) => {
   });
 
   slot.addEventListener("drop", (event) => {
-    event.preventDefault();
-    slot.classList.remove("drag-over");
+  event.preventDefault();
+  slot.classList.remove("drag-over");
 
-    const file = event.dataTransfer.files[0];
-    if (file) {
-      setImageAtIndex(index, file);
-    }
-  });
+  // 枠同士の入れ替え
+  if (
+    draggedIndex !== null &&
+    draggedIndex !== index &&
+    images[draggedIndex]
+  ) {
+    const temp = images[index];
+    images[index] = images[draggedIndex];
+    images[draggedIndex] = temp;
+
+    renderAllSlots();
+
+    draggedIndex = null;
+    return;
+  }
+
+  // PCからファイルをドロップ
+  const file = event.dataTransfer.files[0];
+  if (file) {
+    setImageAtIndex(index, file);
+  }
+});
 });
 
 combineBtn.addEventListener("click", combineImages);
