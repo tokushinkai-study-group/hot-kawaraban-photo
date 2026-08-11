@@ -18,7 +18,7 @@ const clearBtn = document.getElementById("clearBtn");
 const resultSection = document.getElementById("resultSection");
 const resultCanvas = document.getElementById("resultCanvas");
 /** @type {({ file: File, url: string, image: HTMLImageElement } | null)[]} */
-let images = [null, null, null, null, null];
+let images = [null, null, null];
 
 function getSlotElement(index) {
   return document.querySelector(`.upload-slot[data-index="${index}"]`);
