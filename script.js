@@ -264,7 +264,16 @@ function combineImages() {
 
   const link = document.createElement("a");
   link.href = combinedDataUrl;
-  link.download = "dental-combined.png";
+  const today = new Date();
+
+const fileName =
+  `HOT瓦版_${today.getFullYear()}${
+    String(today.getMonth() + 1).padStart(2, "0")
+  }${
+    String(today.getDate()).padStart(2, "0")
+  }.png`;
+
+link.download = fileName;
   link.click();
 }
 
