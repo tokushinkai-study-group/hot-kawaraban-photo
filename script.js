@@ -70,11 +70,11 @@ function renderSlot(index) {
   slot.querySelector(".slot-label").textContent = label;
 
   if (item) {
-slot.draggable = true;
-
-slot.addEventListener("dragstart", () => {
-  draggedIndex = index;
-});
+  slot.draggable = true;
+  slot.ondragstart = () => {
+    draggedIndex = index;
+  };
+    
     slot.classList.remove("slot-empty");
     slot.classList.add("slot-filled");
 
@@ -102,8 +102,11 @@ slot.addEventListener("dragstart", () => {
 
     body.append(img, removeBtn);
   } else {
-    slot.classList.remove("slot-filled");
-    slot.classList.add("slot-empty");
+
+  slot.draggable = false;
+
+  slot.classList.remove("slot-filled");
+  slot.classList.add("slot-empty");
 
     if (!body) {
       body = document.createElement("div");
@@ -199,81 +202,61 @@ function scaleToHeight(img, height) {
 }
 
 function combineImages() {
-  const slots = {
-    front: images[INDEX.front]?.image ?? null,
-    upper: images[INDEX.upper]?.image ?? null,
-    lower: images[INDEX.lower]?.image ?? null,
-    left: images[INDEX.left]?.image ?? null,
-    right: images[INDEX.right]?.image ?? null,
-  };
 
-  const loaded = Object.values(slots).filter(Boolean);
-  if (loaded.length === 0) {
+  const loadedImages = images
+    .filter(Boolean)
+    .map(item => item.image);
+
+  if (loadedImages.length === 0) {
     return;
   }
 
-  const cellSize = Math.min(...loaded.map((img) => Math.max(img.width, img.height)));
+  const targetWidth = Math.min(
+    ...loadedImages.map(img => img.width)
+  );
 
-  const upperSize = slots.upper ? scaleToWidth(slots.upper, cellSize) : null;
-  const frontSize = slots.front ? scaleToWidth(slots.front, cellSize) : null;
-  const lowerSize = slots.lower ? scaleToWidth(slots.lower, cellSize) : null;
+  const sizes = loadedImages.map(img => ({
+    width: targetWidth,
+    height: img.height * (targetWidth / img.width)
+  }));
 
-  const yFront = upperSize?.height ?? 0;
-  const frontHeight = frontSize?.height ?? cellSize;
-  const yLower = yFront + (frontSize?.height ?? 0);
-
-  const leftSize = slots.left ? scaleToHeight(slots.left, frontHeight) : null;
-  const rightSize = slots.right ? scaleToHeight(slots.right, frontHeight) : null;
-
-  const centerWidth = frontSize?.width ?? cellSize;
-  const leftWidth = leftSize?.width ?? 0;
-  const rightWidth = rightSize?.width ?? 0;
-  const centerX = leftWidth;
-
-  const canvasWidth = leftWidth + centerWidth + rightWidth || cellSize;
-
-  const canvasHeight =
-    (upperSize?.height ?? 0) +
-    (frontSize?.height ?? 0) +
-    (lowerSize?.height ?? 0) || cellSize;
-
-  resultCanvas.width = canvasWidth;
-  resultCanvas.height = canvasHeight;
+  resultCanvas.width = targetWidth;
+  resultCanvas.height = sizes.reduce(
+    (sum, size) => sum + size.height,
+    0
+  );
 
   const ctx = resultCanvas.getContext("2d");
+
   ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  ctx.fillRect(
+    0,
+    0,
+    resultCanvas.width,
+    resultCanvas.height
+  );
 
-  if (upperSize && slots.upper) {
-    ctx.drawImage(slots.upper, centerX, 0, upperSize.width, upperSize.height);
-  }
+  let y = 0;
 
-  if (frontSize && slots.front) {
-    ctx.drawImage(slots.front, centerX, yFront, frontSize.width, frontSize.height);
-  }
+  loadedImages.forEach((img, i) => {
+    ctx.drawImage(
+      img,
+      0,
+      y,
+      sizes[i].width,
+      sizes[i].height
+    );
 
-  if (lowerSize && slots.lower) {
-    ctx.drawImage(slots.lower, centerX, yLower, lowerSize.width, lowerSize.height);
-  }
+    y += sizes[i].height;
+  });
 
-  if (leftSize && slots.left) {
-    ctx.drawImage(slots.left, 0, yFront, leftSize.width, leftSize.height);
-  }
+  combinedDataUrl =
+    resultCanvas.toDataURL("image/png");
 
-  if (rightSize && slots.right) {
-    ctx.drawImage(slots.right, centerX + centerWidth, yFront, rightSize.width, rightSize.height);
-  }
-
-  combinedDataUrl = resultCanvas.toDataURL("image/png");
   resultSection.hidden = false;
+
   updateButtons();
 }
-
-function downloadPng() {
-  if (!combinedDataUrl) {
-    alert("先に「画像を結合」ボタンを押してください。");
-    return;
-  }
 
   const link = document.createElement("a");
   link.href = combinedDataUrl;
