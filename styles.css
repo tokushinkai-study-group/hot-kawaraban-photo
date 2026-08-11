@@ -68,6 +68,7 @@ header h1 {
 }
 
 .upload-slot {
+  width: 220px;
   border-radius: 12px;
   overflow: hidden;
   display: flex;
