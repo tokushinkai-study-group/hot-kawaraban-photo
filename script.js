@@ -258,6 +258,12 @@ function combineImages() {
   updateButtons();
 }
 
+  function downloadPng() {
+  if (!combinedDataUrl) {
+    alert("先に「画像を結合」ボタンを押してください。");
+    return;
+  }
+
   const link = document.createElement("a");
   link.href = combinedDataUrl;
   link.download = "dental-combined.png";
