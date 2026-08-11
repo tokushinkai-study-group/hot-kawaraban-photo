@@ -1,19 +1,15 @@
 const SLOT_LABELS = [
-  "①正面",
-  "②上顎咬合面",
-  "③下顎咬合面",
-  "④左側方",
-  "⑤右側方",
+  "1枚目",
+  "2枚目",
+  "3枚目",
 ];
 
-/** インデックス: 0=正面, 1=上顎, 2=下顎, 3=左, 4=右 */
+/** インデックス: 0=1枚目, 1=2枚目, 2=3枚目 */
 const INDEX = {
   front: 0,
   upper: 1,
   lower: 2,
-  left: 3,
-  right: 4,
-};
+  };
 
 const counter = document.getElementById("counter");
 const combineBtn = document.getElementById("combineBtn");
@@ -36,7 +32,7 @@ function getFilledCount() {
 }
 
 function updateCounter() {
-  counter.textContent = `${getFilledCount()} / 5 枚`;
+  counter.textContent = `${getFilledCount()} / 3 枚`;
 }
 
 function updateButtons() {
