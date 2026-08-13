@@ -280,18 +280,47 @@ updateButtons();
     return;
   }
 
+  const isMobile =
+    /iPhone|iPad|Android/i.test(navigator.userAgent);
+
+  // スマホ
+  if (isMobile) {
+    const newWindow = window.open();
+
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>画像保存</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      </head>
+      <body style="margin:0;text-align:center;background:#f5f5f5;">
+        <p style="padding:10px;font-size:14px;">
+          画像を長押しして保存してください
+        </p>
+        }"
+          style="max-width:100%;height:auto;"
+        >
+      </body>
+      </html>
+    `);
+
+    return;
+  }
+
+  // PC
   const link = document.createElement("a");
   link.href = combinedDataUrl;
+
   const today = new Date();
 
-const fileName =
-  `HOT瓦版_${today.getFullYear()}${
-    String(today.getMonth() + 1).padStart(2, "0")
-  }${
-    String(today.getDate()).padStart(2, "0")
-  }.jpg`;
+  const fileName =
+    `HOT瓦版_${today.getFullYear()}${
+      String(today.getMonth() + 1).padStart(2, "0")
+    }${
+      String(today.getDate()).padStart(2, "0")
+    }.jpg`;
 
-link.download = fileName;
+  link.download = fileName;
   link.click();
 }
 
